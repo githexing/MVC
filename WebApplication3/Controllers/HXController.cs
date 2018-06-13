@@ -98,16 +98,17 @@ namespace WebApplication3.Controllers
         public ActionResult upload(HttpPostedFileBase file)
         {
             //var path= file.
+            
             if (Directory.Exists(Server.MapPath("~/Upload/images")) == false)//如果不存在就创建file文件夹
             {
                 Directory.CreateDirectory(Server.MapPath("~/Upload/images"));
             }
             string paths = Server.MapPath("~/Upload/images");
             string postaddpath = DateTime.Now.ToString("yyyyMMddhhmmss");
-            string path = paths +"/"+ postaddpath + ".jpg";
+            string path = paths +"/"+ postaddpath + "."+ file.FileName.Split('.')[1];
             file.SaveAs(path);
 
-            return Json(new { errno = "0", Data = path });
+            return Json(new { errno = "0", Data = "../../Upload/images/"+ postaddpath + "."+ file.FileName.Split('.')[1] });
         }
     }
 }
