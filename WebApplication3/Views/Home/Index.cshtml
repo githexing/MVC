@@ -1,0 +1,273 @@
+﻿@model  WebApplication3.Models.UsersDTOList
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/vue.min.js"></script>
+ 
+<link href="~/Content/page.css" rel="stylesheet" />
+<script src="~/Scripts/vue-resource.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+请输入Name：@Html.TextBox("ds")
+<div id="app">
+    <div v-html="message"></div>
+    <button v-on:click="gg" value="点我">点我</button> 
+</div>
+
+<div id="load">
+    @{
+
+        Html.RenderAction("Member_Page");
+    }
+</div>  
+
+<div class="page-bar">
+
+    <table>
+
+        <thead>
+        <tr>
+            <td>ID</td>
+        <td>姓名</td>
+            </tr>
+        </thead>
+         <tbody v-for="i in collection">
+             <tr>
+              <td v-html="i.ID"></td>
+              <td v-html="i.Name"></td> 
+             </tr>
+            
+         </tbody>
+       
+
+    </table>
+    <ul>
+        <li><a v-on:click="cur=1,pageClick()">首页</a></li>
+        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+        <li v-if="cur==1"><a class="banclick">上一页</a></li>
+        <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}"><a v-on:click="btnClick(index)" v-html="index" ></a></li>
+        <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+        <li v-if="cur == all"><a class="banclick">下一页</a></li>
+        <li><a><input type='text' id='txtPage' style='width: 30px;height: 20px;' v-model="txtPage" onkeyup="value=value.replace(/[^\d]/g,'')" ></a></li> 
+        <li><a id='go' v-on:click="go" >跳转</a></li>
+        <li><a v-on:click="cur=all,pageClick()">尾页</a></li>
+        <li><a>共<i><font v-html="all"></font></i>页</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    //var Url = "www.hao123.com";
+    //var Data = "";
+    //var el = "";
+
+    var pageBar = new Vue({
+    el: '.page-bar',
+    data: { 
+        collection: [],
+        all: "", //总页数
+        cur: 1,//当前页码
+        txtPage: ""
+
+    },
+    watch: {
+        cur: function(oldValue , newValue){
+            console.log(arguments);
+        }
+    },
+     methods: {
+        btnClick: function(data){//页码点击事件 
+            if(data != this.cur){
+                this.cur = data
+            }
+            this.pageClick();
+            //alert(Url)
+        },
+        pageClick: function () {
+
+            this.$http.post("/Home/gg?page=" + this.cur).then(function (Data) {  
+                this.collection = Data.data.Data.UsersList; 
+            })
+            //console.log('现在在'+this.cur+'页');
+        },
+        go: function () {
+     
+            if (this.txtPage=="") {
+                return;
+            } 
+            else {
+                this.cur = this.txtPage;
+            }
+          
+            this.$http.post("/Home/gg?page=" + this.cur).then(function (Data) {  
+                this.collection = Data.data.Data.UsersList; 
+            })
+        }
+     }, 
+    computed: {
+        indexs: function(){
+          var left = 1;
+          var right = this.all;
+          var ar = [];
+          if(this.all>= 5){
+            if(this.cur > 3 && this.cur < this.all-2){
+                    left = this.cur - 2
+                    right = this.cur + 2
+            }else{
+                if(this.cur<=3){
+                    left = 1
+                    right = 5
+                }else{
+                    right = this.all
+                    left = this.all -4
+                }
+            }
+         }
+        while (left <= right){
+            ar.push(left)
+            left ++
+        }
+        return ar
+       }
+
+    },
+    mounted: function () {
+        this.$http.post("/Home/gg?page=" + this.cur).then(function (Data) { 
+            this.collection = Data.data.Data.UsersList;
+            this.all = Data.data.Data.PageSize;
+        })
+    
+      
+       
+    }
+
+})
+</script>
+<br />
+
+
+<button type="button" id="roleadd">roleadd</button>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            message:'hello vue.js.'
+        }, 
+        methods: {
+            gg: function () {
+                this.$http.post("/Home/gg1")
+                    .then(function (result) {
+                        console.log(result)
+                    }) 
+            } 
+        } 
+    }) 
+</script>
+
+<script type="text/javascript">
+ 
+    
+      
+
+
+
+    function getPage(pageIndex) {
+       
+        $("#load").load("/home/Index?pageNumber=" + pageIndex, function () {
+            $.parser.parse($('#load'));
+        });
+    }
+    $(function () {
+        $("#go").click(function () {
+            var str = $("#txtPage").val();
+            
+            getPage(str)
+        })
+    })
+    //$(function () {
+    //    $("#go").click(function () {
+    //        alert(1);
+    //        $.ajax({
+    //            url:"http://52.78.70.141:5993/api/offersExercised",
+    //            type :"POST",  
+    //            data:{"startTime":"2018-04-24T05:48:59Z","endTime":"2018-04-25T05:48:59Z","reduce":false,"base":{"currency":"LQD"},"counter":{"currency":"CNY","issuer":"lDk1DtLUP4PJxbufmpbqbgVNx8jutWM6CT"},"descending":true,"limit":60},
+    //            success:function(data){
+                  
+
+    //            }
+
+
+    //        })
+    //    })
+    //})
+    $(function () {
+        $(".asd").click(function () {
+            var str = $(this).attr("value");
+            $.ajax({
+                url:"/home/Index1?id="+str,
+                type :"POST",
+                success:function(data){
+                    alert(data.Msg);
+                    window.location.href=data.Status;
+
+                }
+
+
+            })
+        })
+
+        $("#roleadd").click(function () {
+       
+            $.ajax({
+                url:"/home/addroles",
+                type :"POST",
+                success:function(data){
+                    alert(data.Msg);
+                    @ViewData["dd"];
+                }
+
+
+            })
+        })
+    })
+
+
+
+    function aa(str) {
+        //var str = $(this).val();
+        //var str = $("button:asd").val();
+        //var s = $(this).val();
+        alert(str)
+        //alert(s)
+        $.ajax({
+            function() {
+
+            }
+
+        })
+
+    }
+
+
+
+</script>
+@using (Html.BeginForm("index", "Home", FormMethod.Post)) {
+ <input  type="text" name="text" value="123"/>
+ <button type="submit"  >submit</button>
+}
+<h1>通过@@Html.partial来使用</h1>
+@Html.Partial("~/Views/Shared/_PartialPageWidget.cshtml")
+<h1>通过@@Html.RenderPartial来使用</h1>
+@{
+    Html.RenderPartial("~/Views/Shared/_PartialPageWidget.cshtml");
+ }
+ 

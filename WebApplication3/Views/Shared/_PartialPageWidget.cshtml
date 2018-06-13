@@ -1,0 +1,27 @@
+﻿@model  WebApplication3.Models.UsersDTOList
+
+<table>
+    <thead>
+        <tr style="align-content:center">
+            <td>ID</td>
+            <td>Name</td>
+            <td>点击</td>
+        </tr>
+    </thead>
+    <tbody id="pagerList">
+        @foreach (var item in Model.UsersList)
+        {
+            <tr style="align-content:center">
+                <td>@item.ID</td>
+                <td>@item.Name</td>
+                <td>
+                    <button type="button" id="123" value="@item.ID" class="asd">Clike1</button>
+                    @*@Html.ActionLink("Clike", "Index1", new { id = @item.ID })*@
+                </td>
+            </tr>
+        }
+    </tbody> 
+</table>
+<div class="nextpage">
+    @Html.Raw(Model.Page)
+</div>

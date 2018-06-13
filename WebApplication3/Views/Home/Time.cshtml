@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+}
+
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/vue.min.js"></script>
+    <link href="~/Content/page.css" rel="stylesheet" />
+    <script src="~/Scripts/vue-resource.js"></script>*@
+
+    //日历
+    @*<link href="~/Scripts/app.css" rel="stylesheet" />
+        <script src="~/Scripts/manifest.js"></script>
+        <script src="~/Scripts/vendor.js"></script>
+        <script src="~/Scripts/app.js"></script>*@
+    @*<script src="~/Scripts/vue-calendar.js"></script>*@
+    <link href="~/CSS/public.css" rel="stylesheet" />
+    <link href="~/CSS/calendar.css" rel="stylesheet" /> 
+    <div id="app">
+        <m-calendar child="date0"></m-calendar>
+        <m-calendar child="date1"></m-calendar>
+    </div>
+    <script src="~/Scripts/calendar/vue.js"></script>
+    <script src="~/Scripts/calendar/vue-calendar.js"></script> 
+    <script>
+        kim = new Vue({
+            el: "#app",
+            data: {
+                date0: {
+                    now: "2017-11-05",
+                    end: "2017-11-25",
+                    callback: function (d) {
+                        kim.date1.start = d;
+                    }
+                },
+                date1: {
+                    now: "2017-11-25",
+                    start: "2017-11-05",
+                    callback: function (d) {
+                        kim.date0.end = d;
+                    }
+                }
+            }
+        });
+    </script>
+ 

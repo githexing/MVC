@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "HX";
+}
+
+<h2>HX</h2>
+<input  id="btn" class="btn1" type="text"/>
+<input id="b" type="button" onclick="asd()"  value="提交"/>
+<script type="text/javascript">
+    function asd() {
+        //alert(1);
+        $.ajax({
+            url: "index1",
+            type: "post",
+            success: function (data) { 
+                //data = eval(data); 
+                alert(data.Data.length);
+                $(".btn1").val(data.Status);
+                data.Data = eval('('+data.Data+')');
+                
+                for (var i = 0; i < data.Data.length; i++) {
+                    $(".asd").append("<tr><td>" + data.Data[i].UserID + "</td><td>" + data.Data[i].UserCode + "</td></tr>").html;
+                }
+              
+            } 
+        }); 
+    } 
+</script>
+<br />
+<table>
+    <thead>
+        <tr>
+       
+            <th>UserID</th>
+            <th>UserCode</th>
+        </tr>
+        
+    </thead>
+    <tbody class="asd">
+        @*<tr>
+            <td>UserID</td>
+            <td>UserCode</td>
+        
+        </tr>*@
+       
+    </tbody>
+
+      
+
+
+</table>
+

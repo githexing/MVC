@@ -1,0 +1,65 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/css/calendar.css" rel="stylesheet" />
+    <link href="~/css/public.css" rel="stylesheet" />
+</head>
+<body>
+  
+        
+        <div id="app">
+            <m-calendar v-bind:child="date0"></m-calendar>
+            <m-calendar v-bind:child="date1"></m-calendar>
+            {{date0}}
+        </div>
+
+        <script src="~/Scripts/vue.js"></script>
+        <script src="~/Scripts/vue-calendar.js"></script>
+
+        <script>
+        kim = new Vue({
+            el: "#app",
+            data: {
+                date0: {
+                    now: "",
+                    end: "2099-11-25",
+                    callback: function (d) {
+                        kim.date1.start = d;
+                    }
+                },
+                date1: {
+                    now: "",
+                    start: "2017-11-05",
+                    callback: function (d) {
+                        kim.date0.end = d;
+                    }
+                }
+            },
+            mounted: function () {
+                console.log(new Date().getMonth());
+                var m=(new Date().getMonth()) + 1;
+                var mm=m;
+                if (m<10) {
+                    mm = "0" + m;
+                }
+                else {
+                    mm = m;
+                }
+                this.date0.now = new Date().getFullYear() + '-' + (mm) + '-' + new Date().getDate();
+
+
+            }
+        });
+        </script>
+  
+   
+</body>
+</html>
