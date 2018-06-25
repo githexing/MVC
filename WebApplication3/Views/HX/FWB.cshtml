@@ -38,6 +38,7 @@
     <button id="btn1">获取html</button>
     <button id="btn3">获取html3</button>
     <button  id="btn2" onclick='confirm("确定要点击嘛？")'>点击</button>
+    <button id="btn4">点击我</button>
     <script src="~/Scripts/FWB/wangEditor.min.js"></script>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
@@ -46,8 +47,7 @@
         editor2.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
         editor2.customConfig.uploadImgServer = '/HX/upload';
         editor2.customConfig.uploadFileName = 'file'
-        editor2.customConfig.uploadImgMaxLength = 1;
-
+        editor2.customConfig.uploadImgMaxLength = 1; 
         editor2.customConfig.uploadImgHooks = {
             customInsert: function (insertImg, result, editor) {
                 // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
@@ -56,35 +56,50 @@
                 // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
                 var url = result.Data
                 alert(url);
-                insertImg(url)
-
+                insertImg(url) 
                 // result 必须是一个 JSON 格式字符串！！！否则报错
             }
         }
-        editor2.create();
+        editor2.create();   
+        //document.getElementById('btn1').addEventListener('click', function () {
+        //    // 读取 html
+        //    alert(editor2.txt.html())
+        //    var text = editor2.txt.html();
+        //    alert(text);
+        //    $.ajax({
+        //        url: "/hx/text?txt=" + text,
+        //        type: "post",
+        //        success: function (result) {
+        //            alert(1);
+        //            console.log(result);
+        //            //if (result.Msg == "ok") {
+        //            //    alert("保存成功！");
+        //            //}
 
-
-
-
-        //editor2.customConfig.customUploadImg = function (files, insert) {
-        //    // files 是 input 中选中的文件列表
-        //    // insert 是获取图片 url 后，插入到编辑器的方法
-        //    console.log(files[0].name);
-        //    // 上传代码返回结果之后，将图片插入到编辑器中
-        //    insert(files[0].name)
-        //}
-        document.getElementById('btn1').addEventListener('click', function () {
-            // 读取 html
-            alert(editor2.txt.html())
-        }, false);
+        //        }
+        //    })
+        //}, false);
+        $("#btn1").click(function () {
+            $.ajax({
+                url: "/hx/text", type: "post", data: { txt: editor2.txt.html()},
+                success: function (res) {
+                    alert(211);
+                }
+            });
+        });
 
         document.getElementById('btn2').addEventListener('click', function () {
             // 读取 html
             alert(editor2.txt.text());
         }, false);
         $(function () {
-            $("#btn3").click(function () {
-                alert(1);
+            $("#btn4").click(function () {
+                $.ajax({
+                    url: "/hx/gg", type: "post", data: { Age: "ASD" },
+                    success: function (res) {
+                        alert(211);
+                    }
+                });
             })
         })
 

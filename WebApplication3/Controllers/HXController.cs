@@ -1,6 +1,7 @@
 ﻿using Service;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -110,5 +111,48 @@ namespace WebApplication3.Controllers
 
             return Json(new { errno = "0", Data = "../../Upload/images/"+ postaddpath + "."+ file.FileName.Split('.')[1] });
         }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult text( string txt)
+        { 
+            DataContext dc = new DataContext();
+           
+            UserEntity U = new UserEntity();
+            U.Name = txt;
+            dc.Users.Add(U);
+            dc.SaveChanges();
+            
+            return Json(new AjaxResult { Msg="ok" });
+        }
+
+        public class A
+        {
+            [Required]
+            [Range(13, 18)]
+            [Display(Name = "年龄")]
+            public int Age { get; set; } 
+        }
+
+        public ActionResult gg(A p)
+        {
+           
+            string aaa = "";
+            foreach (var item in ModelState.Keys)
+            {
+                foreach (ModelError modelError in ModelState[item].Errors)
+                {
+                    aaa += modelError + ".";
+                }
+
+             
+            }  
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResult { Msg = "no" });
+            }
+           
+            return Json(new AjaxResult { Msg = "ok" });
+        }
+        
     }
 }
