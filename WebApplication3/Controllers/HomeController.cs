@@ -37,9 +37,9 @@ namespace WebApplication3.Controllers
             UserEntity pp = new UserEntity();
             var a = str.OrderByDescending(i => i.ID).Select(i => new User_1 { ID = i.ID, Name = i.Name }).ToArray();
 
-            var aw = str.OrderByDescending(i => i.ID).Select(i => new UserEntity { ID = i.ID, Name = i.Name }).ToArray();
-            aw.Count();
-            dc.Users.Add(aw[0]);
+            //var aw = str.OrderByDescending(i => i.ID).Select(i => new UserEntity { ID = i.ID, Name = i.Name }).ToArray();
+            //aw.Count();
+            //dc.Users.Add(aw[0]);
 
             //var b = str.SingleOrDefault().ID;
 
